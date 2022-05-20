@@ -4,7 +4,7 @@ from main.models import Category, Post, PostImage
 
 
 class PostImageInline(admin.TabularInline):
-    image = PostImage
+    model = PostImage
     max_num = 10
     min_num = 1
 

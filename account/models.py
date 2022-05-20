@@ -1,20 +1,21 @@
+from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 
 # Create your models here.
 
 
-class MyUserManager(AbstractUser):
-    use_in_migrations =True
+class MyUserManager(BaseUserManager):
+    use_in_migrations = True
 
     def create_user(self, email, password, **extra_fields):
         email = self.normalize_email(email)
         user = self.model(email=email)
         user.set_password(password)
-        #user.create_activation_code()
+        user.create_activation_code()
         user.save(using=self._db)
         return user
-
 
     def create_superuser(self, email, password, **extra_fields):
         email = self.normalize_email(email)
@@ -25,6 +26,7 @@ class MyUserManager(AbstractUser):
         user.is_superuser = True
         user.save(using=self._db)
         return user
+
 
 class MyUser(AbstractUser):
     username = None
@@ -37,5 +39,13 @@ class MyUser(AbstractUser):
     objects = MyUserManager()
 
     def __str__(self):
-        return  self.email
+        return self.email
+
+    def create_activation_code(self):
+        import hashlib
+        string = self.email + str(self.id)
+        encode_string = string.encode()
+        md5_object = hashlib.md5(encode_string)
+        activation_code=md5_object.hexdigest()
+        self.activation_code = activation_code
 

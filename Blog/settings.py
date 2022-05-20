@@ -36,6 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # libraries
+    'rest_framework',
+    'drf_yasg',
+
     # my apps
     'account',
     'main',
@@ -78,7 +82,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'blog_db',
-        'USER': 'hello',
+        'USER': 'erkeaiymmurzalieva',
         'PASSWORD': '1',
         'HOST': 'localhost',
         'PORT': 5432,
@@ -129,3 +133,5 @@ AUTH_USER_MODEL = 'account.MyUser'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

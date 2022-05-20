@@ -1,8 +1,10 @@
 from django.db import models
 
+from account.models import MyUser
+
 
 class Category(models.Model):
-    slug = models.SlugField(max_length=100, pk=True)
+    slug = models.SlugField(max_length=100, primary_key=True)
     name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -14,7 +16,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=300)
     text = models.TextField()
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class PostImage(models.Model):
