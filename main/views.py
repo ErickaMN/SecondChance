@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from django.db.models import Q
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, action
@@ -72,3 +75,11 @@ class PostsViewSet(viewsets.ModelViewSet):
                                    Q(text__icontains=q))
         serializer = PostSerializer(queryset, many=True, context={'request':request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        weeks_count = int (self.request.query_params.get('week', 0))
+        if weeks_count>0:
+            start_date = timezone.now() - timedelta (weeks=weeks_count)
+            queryset = queryset.filter(created_at__gte=start_date)
+        return queryset
